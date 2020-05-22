@@ -2,7 +2,7 @@ import re
 import yaml
 from jsonpath import jsonpath
 from string import Template
-
+import ast
 
 class SimpleParser(object):
     def parse(self, data: (str, list, dict), context: dict):
@@ -37,18 +37,24 @@ class DotParzer(object):
 
     def parse(self, data: (str, list, dict), context: dict):
         """解析$变量"""
+        origin_type = type(data)
         def repr_func(matched):
+            nonlocal origin_type
             if not matched:
                 return
             expr = matched.group(0)
-            print('matched', expr)
             value = self.dot_get(expr, context)
-            if isinstance(value, str) and not isinstance(data, str):
+            if isinstance(value, str) and not isinstance(data, str):  # ensure str number in yaml load
                 return f'"{value}"'
+            origin_type = type(value)
             return f'{value}'
+
         patten = self.VAR_PARTTERN
         if isinstance(data, str):
-            return re.sub(patten, repr_func, data)
+            result = re.sub(patten, repr_func, data)
+            if origin_type != type(result):
+                result = ast.literal_eval(result)
+            print(result, origin_type, type(result))
 
         data_str = yaml.safe_dump(data)
         parsed_data_str = re.sub(patten, repr_func, data_str)

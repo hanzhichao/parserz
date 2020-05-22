@@ -19,7 +19,7 @@ setup(
     author_email='superhin@126.com',
     description='Easy parser for parse template $variable',
     long_description=read_file('README.md'),
-    # long_description_content_type="text/markdown",  # 新参数
+    long_description_content_type="text/markdown",  # 新参数
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
