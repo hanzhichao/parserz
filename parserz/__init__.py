@@ -24,13 +24,14 @@ class DotParzer(object):
         for dot in dots:
             if hasattr(value, dot):
                 value = getattr(value, dot)
-                continue
-            if dot.isdigit():
-                dot = int(dot)
-            try:
-                value = value[dot]
-            except Exception as ex:
-                return expr
+            else:
+                if dot.isdigit():
+                    dot = int(dot)
+                try:
+                    value = value[dot]
+                except Exception as ex:
+                    print(ex)
+                    return expr
             if callable(value):
                 value = value()
         return value
@@ -54,7 +55,7 @@ class DotParzer(object):
             result = re.sub(patten, repr_func, data)
             if origin_type != type(result):
                 result = ast.literal_eval(result)
-            print(result, origin_type, type(result))
+                return result
 
         data_str = yaml.safe_dump(data)
         parsed_data_str = re.sub(patten, repr_func, data_str)
@@ -74,7 +75,6 @@ class JsonPathParser(object):
             if not matched:
                 return
             expr = matched.group(0)
-            print('matched', expr)
             value = self.jsonpath(expr.replace('$', '$.'), context)
             if isinstance(value, str) and not isinstance(data, str):
                 return f'"{value}"'

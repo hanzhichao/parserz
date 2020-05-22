@@ -34,7 +34,7 @@ setup(
     packages=find_packages(include=['parserz']),
     setup_requires=setup_requirements,
     url='https://github.com/hanzhichao/parserz',
-    version='0.12',
+    version='0.13',
     zip_safe=True,
     install_requires=['pyyaml', 'jsonpath']
 )

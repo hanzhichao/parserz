@@ -7,7 +7,7 @@ Easy parser for parse template $variable
 
 ## Install
 ```
-$ pip install  parserz
+$ pip install parserz
 ```
 
 ## Use
