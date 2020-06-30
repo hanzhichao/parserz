@@ -4,6 +4,7 @@ from jsonpath import jsonpath
 from string import Template
 import ast
 
+
 class SimpleParser(object):
     def parse(self, data: (str, list, dict), context: dict):
         assert isinstance(data, (str, list, dict)), 'data should be str or list or dict type'
@@ -54,7 +55,10 @@ class DotParzer(object):
         if isinstance(data, str):
             result = re.sub(patten, repr_func, data)
             if origin_type != type(result):
-                result = ast.literal_eval(result)
+                try:
+                    result = ast.literal_eval(result)
+                except:
+                    pass
                 return result
 
         data_str = yaml.safe_dump(data)
